@@ -17,7 +17,7 @@ class InputRow extends Component {
   }
 
   handleHint() {
-    console.log("gimme gimme hint");
+    console.log("hint hint");
   }
 
   render() {

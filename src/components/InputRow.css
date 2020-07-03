@@ -3,8 +3,8 @@
 }
 
 .input-span {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   border-radius: 32px;
   width: 100vh;
 }
@@ -12,7 +12,7 @@
 .leftside {
   font-weight: bolder !important;
   color: black !important;
-  padding-top: 7px;
+  padding-top: 10px;
   padding-left: 10px;
 }
 
@@ -24,7 +24,8 @@
   border: none !important;
   box-shadow: none !important;
   width: 40vh !important;
-  margin-left: 90px;
+  margin-left: 91px;
+  caret-color: darkcyan;
 }
 
 .hint-b {
@@ -33,6 +34,14 @@
   width: 7vh !important;
   left: -10px !important;
   font-size: small !important;
+}
+
+.hint-b:hover,
+.hint-b:active,
+.hint-b:visited,
+.hint-b:focus {
+  background-color: darkcyan !important;
+  border-color: darkcyan !important;
 }
 
 .check-btn {
