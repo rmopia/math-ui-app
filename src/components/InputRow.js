@@ -15,16 +15,21 @@ class InputRow extends Component {
     this.setState({ inputVal: e.target.value });
   }
 
+  handleHint() {
+    console.log("hint!");
+  }
+
   render() {
     const { nextRowBool, inputVal } = this.state;
     return (
       <div className="row row-init">
         <button
           className="btn btn-info hint-b"
+          onMouseUp={this.handleHint}
           formNoValidate
           style={{ visibility: nextRowBool ? "visible" : "hidden" }}
         >
-          <span role="img">&#129300;</span>
+          <span role="img">&#129300;</span>hint
         </button>
         <div
           className="input-span"

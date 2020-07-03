@@ -32,9 +32,12 @@
   border-radius: 50% !important;
   width: 7vh !important;
   left: -10px !important;
+  font-size: small !important;
 }
 
 .check-btn {
   border-radius: 32px !important;
   margin-left: 10px;
+  height: 5vh;
+  margin-top: 10px;
 }

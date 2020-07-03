@@ -10,7 +10,20 @@ class MathUI extends Component {
       error: null,
       isLoaded: false,
       rowList: [],
+      problemList: [
+        "3x - 9 (x + 1) - (-5)",
+        "4y + 5 (3 + y) - 2",
+        "12 (10x + 2) + 3x",
+        "5z (2 + 3 (-2z)) - 2z",
+      ],
+      index: 0,
     };
+  }
+
+  randomIndex() {
+    let min = 0;
+    let max = Math.floor(this.state.problemList.length);
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   rowCreation() {
@@ -49,7 +62,12 @@ class MathUI extends Component {
       );
   }*/
 
+  componentDidMount() {
+    this.setState({ index: this.randomIndex() });
+  }
+
   render() {
+    const { problemList, index } = this.state;
     return (
       <div className="v3div">
         <div className="first-spacer" />
@@ -57,7 +75,7 @@ class MathUI extends Component {
           <div className="mx-auto">
             <div className="row">
               <div className="simp-line">
-                <h5 className="simp">Simplify: 3x - 9 (x + 1) - (-5)</h5>
+                <h5 className="simp">Simplify: {problemList[index]}</h5>
               </div>
             </div>
 
