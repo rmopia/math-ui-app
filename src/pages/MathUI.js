@@ -11,10 +11,14 @@ class MathUI extends Component {
       isLoaded: false,
       rowList: [],
       problemList: [
-        "3x - 9 (x + 1) - (-5)",
-        "4y + 5 (3 + y) - 2",
-        "12 (10x + 2) + 3x",
-        "5z (2 + 3 (-2z)) - 2z",
+        { id: 0, str: "Simplify:", prob: "3x - 9 (x + 1) - (-5)" },
+        { id: 0, str: "Simplify:", prob: "4y + 5 (3 + y) - 2" },
+        { id: 0, str: "Simplify:", prob: "12 (10x + 2) + 3x" },
+        { id: 0, str: "Simplify:", prob: "5z (2 + 3 (-2z)) - 2z" },
+        { id: 1, str: "Solve for x:", prob: "12x + 4 = 40" },
+        { id: 1, str: "Solve for x:", prob: "15x - 144 = 3x - 12" },
+        { id: 1, str: "Solve for y:", prob: "3y - 3 (3y + 1) = 27" },
+        { id: 1, str: "Solve for z:", prob: "6z - 1 (z - 1) = 35 - z" },
       ],
       index: 0,
     };
@@ -74,8 +78,11 @@ class MathUI extends Component {
         <div className="row">
           <div className="mx-auto">
             <div className="row">
-              <div className="simp-line">
-                <h5 className="simp">Simplify: {problemList[index]}</h5>
+              <div className="col simp-col-l">
+                <h5 className="simp">{problemList[index].str}</h5>
+              </div>
+              <div className="col simp-col-r">
+                <h5 className="simp">{problemList[index].prob}</h5>
               </div>
             </div>
 
@@ -86,8 +93,8 @@ class MathUI extends Component {
             >
               <InputRow rowCreation={this.rowCreation} />
 
-              {this.state.rowList.map((obj) => (
-                <div>{obj}</div>
+              {this.state.rowList.map((obj, i) => (
+                <div key={i}>{obj}</div>
               ))}
             </form>
           </div>

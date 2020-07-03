@@ -5,6 +5,7 @@ class InputRow extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleHint = this.handleHint.bind(this);
     this.state = {
       nextRowBool: true,
       inputVal: "",
@@ -16,7 +17,7 @@ class InputRow extends Component {
   }
 
   handleHint() {
-    console.log("hint!");
+    console.log("gimme gimme hint");
   }
 
   render() {
