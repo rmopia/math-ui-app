@@ -12,10 +12,12 @@ class InputRow extends Component {
     };
   }
 
+  /* input is added to state var whenever input is changed */
   handleChange(e) {
     this.setState({ inputVal: e.target.value });
   }
 
+  /* when hint btn is clicked */
   handleHint() {
     console.log("hint hint");
   }

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import InputRow from "../components/InputRow";
 import "./MathUI.css";
 
+/* npm install... bootstrap, react-router, react-router-dom 
+& react-bootstrap if you have any problems running the app */
+
 class MathUI extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +29,7 @@ class MathUI extends Component {
     };
   }
 
-  /* for the sake of variety and checking different types of questions */
+  /* for the sake of variety and checking different types of problems */
   randomIndex() {
     let min = 0;
     let max = Math.floor(this.state.problemList.length);
