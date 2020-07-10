@@ -23,4 +23,5 @@
 .simp-text {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
+  font-size: 1.25em !important;
 }

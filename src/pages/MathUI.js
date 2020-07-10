@@ -9,23 +9,25 @@ class MathUI extends Component {
   constructor(props) {
     super(props);
     this.rowCreation = this.rowCreation.bind(this);
+    this.tabAmountListCreator = this.tabAmountListCreator.bind(this);
     this.state = {
       error: null,
       isLoaded: false,
       rowList: [],
       index: 0,
       problemList: [
-        { str: "Simplify:", prob: "3x - 9 (x + 1) - (-5)" },
-        { str: "Simplify:", prob: "4y + 5 (3 + y) - 2" },
+        /*{ str: "Simplify:", prob: "3x - 9 (x + 1) - (-5)" },*/
+        { str: "Solve for x:", prob: "12x + 4 = 40" },
+        /*{ str: "Simplify:", prob: "4y + 5 (3 + y) - 2" },
         { str: "Simplify:", prob: "12 (10x + 2) + 3x" },
         { str: "Simplify:", prob: "5z (2 + 3 (-2z)) - 2z" },
-        { str: "Solve for x:", prob: "12x + 4 = 40" },
         { str: "Solve for x:", prob: "15x - 144 = 3x - 12" },
         { str: "Solve for y:", prob: "3y - 3 (3y + 1) = 27" },
-        { str: "Solve for z:", prob: "6z - 1 (z + 1) = 35 - z" },
+        { str: "Solve for z:", prob: "6z - 1 (z + 1) = 35 - z" },*/
       ],
       rowIndex: 0,
       inputsList: [],
+      tabsList: [],
     };
   }
 
@@ -77,6 +79,22 @@ class MathUI extends Component {
 
   componentDidMount() {
     this.setState({ index: this.randomIndex() });
+    this.tabAmountListCreator();
+  }
+
+  tabAmountListCreator() {
+    const str = this.state.problemList[this.state.index].prob;
+    let arr = str.split(" ");
+    let finalArr = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (i !== arr.length - 1) {
+        let tabs = arr[i].length + 1;
+        for (let j = tabs; j > 0; j--) {
+          finalArr.push(j);
+        }
+      }
+    }
+    this.setState({ tabsList: [...this.state.tabsList, ...finalArr] });
   }
 
   render() {
@@ -116,6 +134,7 @@ class MathUI extends Component {
             <button
               className="btn btn-primary next-btn"
               style={{ visibility: "hidden" }}
+              onClick={() => console.log(this.state.tabsList)}
             >
               next
             </button>

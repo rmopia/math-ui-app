@@ -6,6 +6,7 @@ class InputRow extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleHint = this.handleHint.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.state = {
       nextRowBool: true,
       inputVal: "",
@@ -20,6 +21,21 @@ class InputRow extends Component {
   /* when hint btn is clicked */
   handleHint() {
     console.log("hint hint");
+  }
+
+  handleKeyDown(event) {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      const { selectionStart, selectionEnd } = event.target;
+
+      this.setState((prevState) => ({
+        inputVal:
+          prevState.inputVal.substring(0, selectionStart) +
+          "    " +
+          prevState.inputVal.substring(selectionEnd),
+      }));
+      //event.target.value = this.state.inputVal;
+    }
   }
 
   render() {
@@ -65,7 +81,8 @@ class InputRow extends Component {
                     this.setState({ nextRowBool: false });
                   }
                 }}
-                disabled={!nextRowBool}
+                onKeyDown={this.handleKeyDown}
+                value={inputVal}
                 style={{
                   backgroundColor: nextRowBool ? "ghostwhite" : "white",
                 }}
@@ -77,7 +94,7 @@ class InputRow extends Component {
           className="btn btn-primary check-btn"
           formNoValidate
           style={{ visibility: nextRowBool ? "visible" : "hidden" }}
-          onClick={(event) => {
+          onClick={() => {
             if (nextRowBool === true && inputVal !== "") {
               this.props.rowCreation();
               this.setState({ nextRowBool: false });
