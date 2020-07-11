@@ -16,8 +16,8 @@ class MathUI extends Component {
       rowList: [],
       index: 0,
       problemList: [
-        /*{ str: "Simplify:", prob: "3x - 9 (x + 1) - (-5)" },*/
-        { str: "Solve for x:", prob: "12x + 4 = 40" },
+        //{ str: "Simplify:", prob: "3x - 9 (x + 1) - (-5)", ptype: 0 },
+        { str: "Solve for x:", prob: "12x + 4 = 40", ptype: 1 },
         /*{ str: "Simplify:", prob: "4y + 5 (3 + y) - 2" },
         { str: "Simplify:", prob: "12 (10x + 2) + 3x" },
         { str: "Simplify:", prob: "5z (2 + 3 (-2z)) - 2z" },
@@ -43,7 +43,11 @@ class MathUI extends Component {
     let child = [];
 
     child.push(
-      <InputRow rowCreation={this.rowCreation} rowIndex={this.rowIndex} />
+      <InputRow
+        rowCreation={this.rowCreation}
+        rowIndex={this.state.rowIndex}
+        tabsList={this.state.tabsList}
+      />
     );
 
     this.setState({
@@ -88,8 +92,9 @@ class MathUI extends Component {
     let finalArr = [];
     for (let i = 0; i < arr.length; i++) {
       if (i !== arr.length - 1) {
-        let tabs = arr[i].length + 1;
-        for (let j = tabs; j > 0; j--) {
+        let tabs = 2 * (arr[i].length + 1);
+        let len = 0;
+        for (let j = tabs; j > len; j = j - 2) {
           finalArr.push(j);
         }
       }
@@ -120,7 +125,8 @@ class MathUI extends Component {
             >
               <InputRow
                 rowCreation={this.rowCreation}
-                rowIndex={this.rowIndex}
+                rowIndex={this.state.rowIndex}
+                tabsList={this.state.tabsList}
               />
 
               {this.state.rowList.map((obj, i) => (

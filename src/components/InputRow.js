@@ -10,31 +10,38 @@ class InputRow extends Component {
     this.state = {
       nextRowBool: true,
       inputVal: "",
+      selectionStart: "",
+      tabIdx: 0,
     };
   }
 
   /* input is added to state var whenever input is changed */
   handleChange(e) {
-    this.setState({ inputVal: e.target.value });
+    //console.log(e.target.selectionStart);
+    this.setState({
+      inputVal: e.target.value,
+    });
   }
 
   /* when hint btn is clicked */
   handleHint() {
-    console.log("hint hint");
+    console.log(this.props.tabsList);
   }
 
+  /* when specific keys are pushed in the input i.e. Tab */
   handleKeyDown(event) {
     if (event.key === "Tab") {
       event.preventDefault();
       const { selectionStart, selectionEnd } = event.target;
 
+      console.log(this.props.tabsList[selectionStart]);
+
       this.setState((prevState) => ({
         inputVal:
           prevState.inputVal.substring(0, selectionStart) +
-          "    " +
+          "\t" +
           prevState.inputVal.substring(selectionEnd),
       }));
-      //event.target.value = this.state.inputVal;
     }
   }
 
@@ -85,6 +92,7 @@ class InputRow extends Component {
                 value={inputVal}
                 style={{
                   backgroundColor: nextRowBool ? "ghostwhite" : "white",
+                  tabSize: (e) => this.props.tabsList[e.target.selectionStart],
                 }}
               />
             </div>

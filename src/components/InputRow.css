@@ -22,6 +22,7 @@
   font-size: 1.25em !important;
   font-weight: bolder !important;
   box-shadow: none !important;
+  border: none !important;
   width: 40vh !important;
   margin-left: 91px;
   caret-color: darkcyan;
