@@ -10,6 +10,7 @@ class MathUI extends Component {
     super(props);
     this.rowCreation = this.rowCreation.bind(this);
     this.tabAmountListCreator = this.tabAmountListCreator.bind(this);
+    this.tabElementListCreator = this.tabElementListCreator.bind(this);
     this.state = {
       error: null,
       isLoaded: false,
@@ -28,6 +29,7 @@ class MathUI extends Component {
       rowIndex: 0,
       inputsList: [],
       tabsList: [],
+      tabElementList: [],
     };
   }
 
@@ -47,6 +49,7 @@ class MathUI extends Component {
         rowCreation={this.rowCreation}
         rowIndex={this.state.rowIndex}
         tabsList={this.state.tabsList}
+        tabElementList={this.state.tabElementList}
         probType={this.state.problemList[this.state.index].ptype}
         problem={this.state.problemList[this.state.index].prob}
       />
@@ -86,6 +89,18 @@ class MathUI extends Component {
   componentDidMount() {
     this.setState({ index: this.randomIndex() });
     this.tabAmountListCreator();
+    this.tabElementListCreator();
+  }
+
+  tabElementListCreator() {
+    const str = this.state.problemList[this.state.index].prob;
+    let arr = [];
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] === " ") {
+        arr.push(i + 1);
+      }
+    }
+    this.setState({ tabElementList: [...this.state.tabElementList, ...arr] });
   }
 
   tabAmountListCreator() {
@@ -94,9 +109,9 @@ class MathUI extends Component {
     let finalArr = [];
     for (let i = 0; i < arr.length; i++) {
       if (i !== arr.length - 1) {
-        let tabs = 2 * (arr[i].length + 1);
+        let tabs = arr[i].length + 1;
         let len = 0;
-        for (let j = tabs; j > len; j = j - 2) {
+        for (let j = tabs; j > len; j--) {
           finalArr.push(j);
         }
       }
@@ -129,6 +144,7 @@ class MathUI extends Component {
                 rowCreation={this.rowCreation}
                 rowIndex={this.state.rowIndex}
                 tabsList={this.state.tabsList}
+                tabElementList={this.state.tabElementList}
                 problem={this.state.problemList[this.state.index].prob}
               />
 

@@ -7,10 +7,10 @@ class InputRow extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleHint = this.handleHint.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.findOffset = this.findOffset.bind(this);
     this.state = {
       nextRowBool: true,
       inputVal: "",
-      selectionStart: "",
       tabIdx: 0,
     };
   }
@@ -24,28 +24,40 @@ class InputRow extends Component {
     });
   }
 
-  findOffset() {}
-
   /* when hint btn is clicked */
   handleHint() {
-    console.log(this.props.problem);
+    console.log(this.props.tabElementList);
   }
 
   /* when specific keys are pushed in the input i.e. Tab */
   handleKeyDown(event) {
-    if (event.key === "Tab") {
+    const { selectionStart, selectionEnd } = event.target;
+    if (
+      event.key === "Tab" &&
+      !event.shiftKey &&
+      selectionStart < this.props.tabsList.length
+    ) {
       event.preventDefault();
-      const { selectionStart, selectionEnd } = event.target;
 
-      console.log(this.props.tabsList[selectionStart]);
+      //console.log(this.props.tabsList[event.target.selectionStart]);
+      //console.log(selectionStart);
 
       this.setState((prevState) => ({
         inputVal:
           prevState.inputVal.substring(0, selectionStart) +
-          "\t" +
+          "\t".repeat(this.props.tabsList[selectionStart]) +
+          //"\t" +
           prevState.inputVal.substring(selectionEnd),
       }));
     }
+  }
+
+  findOffset(e) {
+    console.log("fefhuehj");
+    let tList = this.props.tabElementList;
+
+    let diff = e.target.selectionStart;
+    console.log(diff);
   }
 
   render() {
@@ -86,6 +98,7 @@ class InputRow extends Component {
                   className="form-control input-init"
                   autoFocus={true}
                   onChange={this.handleChange}
+                  onInput={this.findOffset}
                   onKeyPress={(event) => {
                     if (
                       event.key === "Enter" &&
@@ -100,8 +113,7 @@ class InputRow extends Component {
                   value={inputVal}
                   style={{
                     backgroundColor: nextRowBool ? "ghostwhite" : "white",
-                    tabSize: (e) =>
-                      this.props.tabsList[e.target.selectionStart],
+                    tabSize: 1,
                   }}
                 />
               </div>
