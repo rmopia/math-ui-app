@@ -16,8 +16,13 @@
   padding-left: 10px;
 }
 
+.in-hr {
+  border: 2px solid black;
+  width: 20vw;
+}
+
 .input-init {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Lucida Console", Monaco, monospace;
   color: black !important;
   font-size: 1.25em !important;
   font-weight: bolder !important;

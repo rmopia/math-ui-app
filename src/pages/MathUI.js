@@ -47,6 +47,8 @@ class MathUI extends Component {
         rowCreation={this.rowCreation}
         rowIndex={this.state.rowIndex}
         tabsList={this.state.tabsList}
+        probType={this.state.problemList[this.state.index].ptype}
+        problem={this.state.problemList[this.state.index].prob}
       />
     );
 
@@ -127,6 +129,7 @@ class MathUI extends Component {
                 rowCreation={this.rowCreation}
                 rowIndex={this.state.rowIndex}
                 tabsList={this.state.tabsList}
+                problem={this.state.problemList[this.state.index].prob}
               />
 
               {this.state.rowList.map((obj, i) => (
