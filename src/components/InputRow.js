@@ -7,7 +7,7 @@ class InputRow extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleHint = this.handleHint.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.findOffset = this.findOffset.bind(this);
+    //this.findDelta = this.findDelta.bind(this);
     this.state = {
       nextRowBool: true,
       inputVal: "",
@@ -17,8 +17,6 @@ class InputRow extends Component {
 
   /* input is added to state var whenever input is changed */
   handleChange(e) {
-    //console.log(this.props.problem.length - e.target.selectionStart);
-    console.log(e.target.selectionStart);
     this.setState({
       inputVal: e.target.value,
     });
@@ -26,7 +24,7 @@ class InputRow extends Component {
 
   /* when hint btn is clicked */
   handleHint() {
-    console.log(this.props.tabElementList);
+    console.log(this.props.tabsList);
   }
 
   /* when specific keys are pushed in the input i.e. Tab */
@@ -39,25 +37,37 @@ class InputRow extends Component {
     ) {
       event.preventDefault();
 
-      //console.log(this.props.tabsList[event.target.selectionStart]);
-      //console.log(selectionStart);
+      //const diff = this.findDelta(event);
 
       this.setState((prevState) => ({
         inputVal:
           prevState.inputVal.substring(0, selectionStart) +
+          //"\t".repeat(diff) +
           "\t".repeat(this.props.tabsList[selectionStart]) +
-          //"\t" +
           prevState.inputVal.substring(selectionEnd),
       }));
+    } else if (
+      event.key === "Tab" &&
+      event.shiftKey &&
+      selectionStart < this.props.tabsList.length
+    ) {
+      //event.preventDefault();
     }
   }
 
-  findOffset(e) {
-    console.log("fefhuehj");
+  /* Find difference between next element & current cursor placement */
+  findDelta(e) {
     let tList = this.props.tabElementList;
-
-    let diff = e.target.selectionStart;
+    const selectionStart = e.target.selectionStart;
+    let diff = 0;
+    for (let i = 0; i < tList.length; i++) {
+      if (selectionStart < tList[i]) {
+        diff = tList[i] - selectionStart;
+        break;
+      }
+    }
     console.log(diff);
+    return diff;
   }
 
   render() {
@@ -103,7 +113,8 @@ class InputRow extends Component {
                     if (
                       event.key === "Enter" &&
                       nextRowBool === true &&
-                      inputVal !== ""
+                      inputVal !== "" &&
+                      inputVal.replace(/\s/g, "").length
                     ) {
                       this.props.rowCreation();
                       this.setState({ nextRowBool: false });
@@ -124,7 +135,11 @@ class InputRow extends Component {
             formNoValidate
             style={{ visibility: nextRowBool ? "visible" : "hidden" }}
             onClick={() => {
-              if (nextRowBool === true && inputVal !== "") {
+              if (
+                nextRowBool === true &&
+                inputVal !== "" &&
+                inputVal.replace(/\s/g, "").length
+              ) {
                 this.props.rowCreation();
                 this.setState({ nextRowBool: false });
               }
