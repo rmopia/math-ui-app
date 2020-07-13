@@ -21,7 +21,7 @@
 }
 
 .simp-text {
-  font-family: "Lucida Console", Monaco, monospace;
-  font-weight: bold;
+  font-family: "Overpass Mono";
+  font-weight: 700 !important;
   font-size: 1.25em !important;
 }

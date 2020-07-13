@@ -49,9 +49,10 @@ class InputRow extends Component {
     } else if (
       event.key === "Tab" &&
       event.shiftKey &&
-      selectionStart < this.props.tabsList.length
+      selectionStart < this.props.tabsList.length &&
+      selectionStart > 0
     ) {
-      //event.preventDefault();
+      event.preventDefault();
     }
   }
 
@@ -85,7 +86,10 @@ class InputRow extends Component {
             formNoValidate
             style={{ visibility: nextRowBool ? "visible" : "hidden" }}
           >
-            <span role="img">&#129300;</span>hint
+            <span role="img" aria-label="thinking">
+              &#129300;
+            </span>
+            hint
           </button>
           <div
             className="input-span"
