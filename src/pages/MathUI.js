@@ -9,7 +9,6 @@ class MathUI extends Component {
   constructor(props) {
     super(props);
     this.rowCreation = this.rowCreation.bind(this);
-    this.tabAmountListCreator = this.tabAmountListCreator.bind(this);
     this.tabElementListCreator = this.tabElementListCreator.bind(this);
     this.state = {
       error: null,
@@ -28,8 +27,8 @@ class MathUI extends Component {
       ],
       rowIndex: 0,
       inputsList: [],
-      tabsList: [],
       tabElementList: [],
+      limitLength: 0,
     };
   }
 
@@ -48,7 +47,8 @@ class MathUI extends Component {
       <InputRow
         rowCreation={this.rowCreation}
         rowIndex={this.state.rowIndex}
-        tabsList={this.state.tabsList}
+        //tabsList={this.state.tabsList}
+        limitLength={this.state.limitLength}
         tabElementList={this.state.tabElementList}
         probType={this.state.problemList[this.state.index].ptype}
         problem={this.state.problemList[this.state.index].prob}
@@ -88,21 +88,28 @@ class MathUI extends Component {
 
   componentDidMount() {
     this.setState({ index: this.randomIndex() });
-    this.tabAmountListCreator();
     this.tabElementListCreator();
   }
 
+  /* Used to find deltas between element & cursor */
   tabElementListCreator() {
     const str = this.state.problemList[this.state.index].prob;
+    let limitLen = 0;
     let arr = [];
     for (let i = 0; i < str.length; i++) {
       if (str[i] === " ") {
         arr.push(i + 1);
+        limitLen = i;
       }
     }
-    this.setState({ tabElementList: [...this.state.tabElementList, ...arr] });
+    limitLen += 1;
+    this.setState({
+      tabElementList: [...this.state.tabElementList, ...arr],
+      limitLength: limitLen,
+    });
   }
 
+  /*
   tabAmountListCreator() {
     const str = this.state.problemList[this.state.index].prob;
     let arr = str.split(" ");
@@ -118,6 +125,7 @@ class MathUI extends Component {
     }
     this.setState({ tabsList: [...this.state.tabsList, ...finalArr] });
   }
+*/
 
   render() {
     const { problemList, index } = this.state;
@@ -143,7 +151,8 @@ class MathUI extends Component {
               <InputRow
                 rowCreation={this.rowCreation}
                 rowIndex={this.state.rowIndex}
-                tabsList={this.state.tabsList}
+                //tabsList={this.state.tabsList}
+                limitLength={this.state.limitLength}
                 tabElementList={this.state.tabElementList}
                 problem={this.state.problemList[this.state.index].prob}
               />
@@ -159,7 +168,7 @@ class MathUI extends Component {
             <button
               className="btn btn-primary next-btn"
               style={{ visibility: "hidden" }}
-              onClick={() => console.log(this.state.tabsList)}
+              onClick={() => console.log(this.state.limitLength)}
             >
               next
             </button>

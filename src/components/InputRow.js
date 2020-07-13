@@ -5,13 +5,16 @@ class InputRow extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleInput = this.handleInput.bind(this);
     this.handleHint = this.handleHint.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    //this.findDelta = this.findDelta.bind(this);
+    this.findDelta = this.findDelta.bind(this);
+    this.findDeltaReverse = this.findDeltaReverse.bind(this);
     this.state = {
       nextRowBool: true,
       inputVal: "",
       tabIdx: 0,
+      tabbedOut: false,
     };
   }
 
@@ -22,38 +25,92 @@ class InputRow extends Component {
     });
   }
 
-  /* when hint btn is clicked */
-  handleHint() {
-    console.log(this.props.tabsList);
+  /* reset tabbing boolean if input is cleared/empty */
+  handleInput(e) {
+    if (e.target.value === "") {
+      console.log("what up");
+      this.setState({ tabbedOut: false });
+    }
   }
 
-  /* when specific keys are pushed in the input i.e. Tab */
+  /* when hint btn is clicked */
+  handleHint() {
+    console.log(this.props.tabElementList);
+  }
+
+  /* when specific keys are pushed in the input */
   handleKeyDown(event) {
     const { selectionStart, selectionEnd } = event.target;
+    // Tab is pressed
     if (
       event.key === "Tab" &&
       !event.shiftKey &&
-      selectionStart < this.props.tabsList.length
+      selectionStart < this.props.limitLength &&
+      this.state.tabbedOut === false
     ) {
       event.preventDefault();
 
-      //const diff = this.findDelta(event);
-
+      const diff = this.findDelta(event);
       this.setState((prevState) => ({
         inputVal:
           prevState.inputVal.substring(0, selectionStart) +
-          //"\t".repeat(diff) +
-          "\t".repeat(this.props.tabsList[selectionStart]) +
+          "\t".repeat(diff) +
           prevState.inputVal.substring(selectionEnd),
       }));
-    } else if (
+    }
+    // Tab is pressed after looping
+    else if (
       event.key === "Tab" &&
-      event.shiftKey &&
-      selectionStart < this.props.tabsList.length &&
-      selectionStart > 0
+      !event.shiftKey &&
+      selectionStart < this.props.limitLength &&
+      this.state.tabbedOut === true
     ) {
       event.preventDefault();
+      const diff = this.findDelta(event);
+      event.target.selectionStart = event.target.selectionEnd =
+        selectionStart + diff;
     }
+    // Tab is pressed at very end of input
+    else if (
+      event.key === "Tab" &&
+      !event.shiftKey &&
+      selectionStart >= this.props.limitLength
+    ) {
+      event.preventDefault();
+      event.target.selectionStart = event.target.selectionEnd = 0;
+      this.setState({ tabbedOut: true });
+    }
+    // Shift + Tab is pressed // still not working correctly
+    else if (
+      event.key === "Tab" &&
+      event.shiftKey &&
+      selectionStart <= this.props.problem.length &&
+      selectionStart >= 0
+    ) {
+      event.preventDefault();
+      let diff = this.findDeltaReverse(event);
+      if (diff === 0) {
+        event.target.selectionStart = event.target.selectionEnd =
+          selectionStart - 4;
+      } else {
+        event.target.selectionStart = event.target.selectionEnd =
+          selectionStart - diff;
+      }
+    }
+  }
+
+  findDeltaReverse(e) {
+    let tList = this.props.tabElementList;
+    let revList = [].concat(tList).reverse();
+    const selectionStart = e.target.selectionStart;
+    let diff = 0;
+    for (let i = 0; i < revList.length; i++) {
+      if (selectionStart > revList[i]) {
+        diff = selectionStart - revList[i];
+        break;
+      }
+    }
+    return diff;
   }
 
   /* Find difference between next element & current cursor placement */
@@ -67,7 +124,6 @@ class InputRow extends Component {
         break;
       }
     }
-    console.log(diff);
     return diff;
   }
 
@@ -112,7 +168,7 @@ class InputRow extends Component {
                   className="form-control input-init"
                   autoFocus={true}
                   onChange={this.handleChange}
-                  onInput={this.findOffset}
+                  onInput={this.handleInput}
                   onKeyPress={(event) => {
                     if (
                       event.key === "Enter" &&
