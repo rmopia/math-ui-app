@@ -28,7 +28,6 @@ class InputRow extends Component {
   /* reset tabbing boolean if input is cleared/empty */
   handleInput(e) {
     if (e.target.value === "") {
-      console.log("what up");
       this.setState({ tabbedOut: false });
     }
   }
@@ -80,22 +79,40 @@ class InputRow extends Component {
       event.target.selectionStart = event.target.selectionEnd = 0;
       this.setState({ tabbedOut: true });
     }
-    // Shift + Tab is pressed // still not working correctly
+    // Shift + Tab is pressed
     else if (
       event.key === "Tab" &&
       event.shiftKey &&
       selectionStart <= this.props.problem.length &&
-      selectionStart >= 0
+      selectionStart > 0
     ) {
       event.preventDefault();
       let diff = this.findDeltaReverse(event);
       if (diff === 0) {
-        event.target.selectionStart = event.target.selectionEnd =
-          selectionStart - 4;
+        event.target.selectionStart = event.target.selectionEnd = 0;
       } else {
         event.target.selectionStart = event.target.selectionEnd =
           selectionStart - diff;
       }
+    }
+    // Shift + Tab at 0 and with no content
+    else if (
+      event.key === "Tab" &&
+      event.shiftKey &&
+      selectionStart === 0 &&
+      this.state.tabbedOut === false
+    ) {
+      event.preventDefault();
+    }
+    // Shift + Tab at 0 with previous content
+    else if (
+      event.key === "Tab" &&
+      event.shiftKey &&
+      selectionStart === 0 &&
+      this.state.tabbedOut === true
+    ) {
+      event.preventDefault();
+      event.target.selectionStart = event.target.selectionEnd = this.props.limitLength;
     }
   }
 
