@@ -29,6 +29,7 @@ class MathUI extends Component {
       inputsList: [],
       tabElementList: [],
       limitLength: 0,
+      latestInput: "",
     };
   }
 
@@ -47,11 +48,11 @@ class MathUI extends Component {
       <InputRow
         rowCreation={this.rowCreation}
         rowIndex={this.state.rowIndex}
-        //tabsList={this.state.tabsList}
         limitLength={this.state.limitLength}
         tabElementList={this.state.tabElementList}
         probType={this.state.problemList[this.state.index].ptype}
         problem={this.state.problemList[this.state.index].prob}
+        latestInput={this.state.latestInput}
       />
     );
 
@@ -109,24 +110,6 @@ class MathUI extends Component {
     });
   }
 
-  /*
-  tabAmountListCreator() {
-    const str = this.state.problemList[this.state.index].prob;
-    let arr = str.split(" ");
-    let finalArr = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (i !== arr.length - 1) {
-        let tabs = arr[i].length + 1;
-        let len = 0;
-        for (let j = tabs; j > len; j--) {
-          finalArr.push(j);
-        }
-      }
-    }
-    this.setState({ tabsList: [...this.state.tabsList, ...finalArr] });
-  }
-*/
-
   render() {
     const { problemList, index } = this.state;
     return (
@@ -151,10 +134,11 @@ class MathUI extends Component {
               <InputRow
                 rowCreation={this.rowCreation}
                 rowIndex={this.state.rowIndex}
-                //tabsList={this.state.tabsList}
                 limitLength={this.state.limitLength}
                 tabElementList={this.state.tabElementList}
                 problem={this.state.problemList[this.state.index].prob}
+                probType={this.state.problemList[this.state.index].ptype}
+                latestInput={this.state.latestInput}
               />
 
               {this.state.rowList.map((obj, i) => (

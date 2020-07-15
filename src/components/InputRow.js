@@ -4,6 +4,7 @@ import "./InputRow.css";
 class InputRow extends Component {
   constructor(props) {
     super(props);
+    this.lineCreator = this.lineCreator.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.handleHint = this.handleHint.bind(this);
@@ -12,10 +13,22 @@ class InputRow extends Component {
     this.findDeltaReverse = this.findDeltaReverse.bind(this);
     this.state = {
       nextRowBool: true,
+      lineBool: false,
       inputVal: "",
       tabIdx: 0,
       tabbedOut: false,
     };
+  }
+
+  /* generates line if specific input is placed */
+  lineCreator() {
+    console.log(this.state.inputVal);
+    console.log(this.state.inputVal.length);
+    const input = this.state.inputVal.replace(/[\t\n\r]/gm, " ").trim();
+    console.log(input.length);
+    console.log(input);
+    const booly = input.match(/^(?:[+\d].*\d|\d)$/gm);
+    this.setState({ lineBool: true });
   }
 
   /* input is added to state var whenever input is changed */
@@ -40,7 +53,7 @@ class InputRow extends Component {
   /* when specific keys are pushed in the input */
   handleKeyDown(event) {
     const { selectionStart, selectionEnd } = event.target;
-    // Tab is pressed
+    // Tab is pressed (first loop)
     if (
       event.key === "Tab" &&
       !event.shiftKey &&
@@ -48,7 +61,6 @@ class InputRow extends Component {
       this.state.tabbedOut === false
     ) {
       event.preventDefault();
-
       const diff = this.findDelta(event);
       this.setState((prevState) => ({
         inputVal:
@@ -79,6 +91,7 @@ class InputRow extends Component {
       event.target.selectionStart = event.target.selectionEnd = 0;
       this.setState({ tabbedOut: true });
     }
+    /* still working on this, not sure if required */
     // Shift + Tab is pressed
     else if (
       event.key === "Tab" &&
@@ -116,20 +129,6 @@ class InputRow extends Component {
     }
   }
 
-  findDeltaReverse(e) {
-    let tList = this.props.tabElementList;
-    let revList = [].concat(tList).reverse();
-    const selectionStart = e.target.selectionStart;
-    let diff = 0;
-    for (let i = 0; i < revList.length; i++) {
-      if (selectionStart > revList[i]) {
-        diff = selectionStart - revList[i];
-        break;
-      }
-    }
-    return diff;
-  }
-
   /* Find difference between next element & current cursor placement */
   findDelta(e) {
     let tList = this.props.tabElementList;
@@ -144,14 +143,26 @@ class InputRow extends Component {
     return diff;
   }
 
+  /* Find difference for shift + tab cases */
+
+  findDeltaReverse(e) {
+    let tList = this.props.tabElementList;
+    let revList = [].concat(tList).reverse();
+    const selectionStart = e.target.selectionStart;
+    let diff = 0;
+    for (let i = 0; i < revList.length; i++) {
+      if (selectionStart > revList[i]) {
+        diff = selectionStart - revList[i];
+        break;
+      }
+    }
+    return diff;
+  }
+
   render() {
     const { nextRowBool, inputVal } = this.state;
     return (
       <div>
-        <hr
-          className="in-hr"
-          style={{ display: this.props.probType ? "" : "none" }}
-        />
         <div className="row row-init">
           <button
             className="btn btn-info hint-b"
@@ -193,6 +204,7 @@ class InputRow extends Component {
                       inputVal !== "" &&
                       inputVal.replace(/\s/g, "").length
                     ) {
+                      this.lineCreator();
                       this.props.rowCreation();
                       this.setState({ nextRowBool: false });
                     }
@@ -217,6 +229,7 @@ class InputRow extends Component {
                 inputVal !== "" &&
                 inputVal.replace(/\s/g, "").length
               ) {
+                this.lineCreator();
                 this.props.rowCreation();
                 this.setState({ nextRowBool: false });
               }
@@ -225,6 +238,12 @@ class InputRow extends Component {
             check
           </button>
         </div>
+        <hr
+          className="in-hr"
+          style={{
+            display: this.props.probType && this.state.lineBool ? "" : "none",
+          }}
+        />
       </div>
     );
   }
