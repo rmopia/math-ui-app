@@ -26,10 +26,8 @@ class MathUI extends Component {
         { str: "Simplify:", prob: "5z (2 + 3 (-2z)) - 2z", ptype: 0 },
         */
       ],
-      inputsList: [],
       tabElementList: [],
       limitLength: 0,
-      latestInput: "",
     };
   }
 
@@ -51,7 +49,6 @@ class MathUI extends Component {
         tabElementList={this.state.tabElementList}
         probType={this.state.problemList[this.state.index].ptype}
         problem={this.state.problemList[this.state.index].prob}
-        latestInput={this.state.latestInput}
       />
     );
 
@@ -91,7 +88,7 @@ class MathUI extends Component {
     this.tabElementListCreator();
   }
 
-  /* Used to find deltas between element & cursor */
+  /* Element indices to find deltas between element & cursor */
   tabElementListCreator() {
     const str = this.state.problemList[this.state.index].prob;
     let limitLen = 0;
@@ -136,7 +133,6 @@ class MathUI extends Component {
                 tabElementList={this.state.tabElementList}
                 problem={this.state.problemList[this.state.index].prob}
                 probType={this.state.problemList[this.state.index].ptype}
-                latestInput={this.state.latestInput}
               />
 
               {this.state.rowList.map((obj, i) => (

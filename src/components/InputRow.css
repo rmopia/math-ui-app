@@ -18,7 +18,8 @@
 
 .in-hr {
   border: 2px solid black;
-  width: 20vw;
+  margin-top: -8px;
+  width: 24vw;
 }
 
 .input-init {

@@ -15,7 +15,6 @@ class InputRow extends Component {
       nextRowBool: true,
       lineBool: false,
       inputVal: "",
-      tabIdx: 0,
       tabbedOut: false,
     };
   }
@@ -23,10 +22,10 @@ class InputRow extends Component {
   /* generates line if specific input is placed */
   lineCreator() {
     const input = this.state.inputVal.replace(/[\t\n\r\s]/gm, ""); // removes all whitespace
-    const regex = RegExp(/^(.*)\1(.*)\2$/gm);
-    const regexBool = regex.test(input);
-    console.log(regexBool);
-    if (regexBool === true) {
+    const regex = RegExp(/^(.*)\1$/gm);
+    const showLine = regex.test(input);
+    console.log(showLine);
+    if (showLine === true) {
       this.setState({ lineBool: true });
     }
   }
