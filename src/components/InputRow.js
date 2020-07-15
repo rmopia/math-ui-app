@@ -23,11 +23,10 @@ class InputRow extends Component {
   /* generates line if specific input is placed */
   lineCreator() {
     const input = this.state.inputVal.replace(/[\t\n\r\s]/gm, ""); // removes all whitespace
-    console.log(input);
-    const regex = RegExp(/^[=\d](?:.*\d)(?:.*\d).?$/gm); // replace this
+    const regex = RegExp(/^(.*)\1(.*)\2$/gm);
     const regexBool = regex.test(input);
     console.log(regexBool);
-    if (regexBool === false) {
+    if (regexBool === true) {
       this.setState({ lineBool: true });
     }
   }
@@ -47,8 +46,9 @@ class InputRow extends Component {
   }
 
   /* when hint btn is clicked */
+  /* being used for debugging right now */
   handleHint() {
-    console.log(this.props.tabElementList);
+    console.log(this.props.probType + " " + this.props.problem);
   }
 
   /* when specific keys are pushed in the input */

@@ -18,14 +18,14 @@ class MathUI extends Component {
       problemList: [
         //{ str: "Simplify:", prob: "3x - 9 (x + 1) - (-5)", ptype: 0 },
         { str: "Solve for x:", prob: "12x + 4 = 40", ptype: 1 },
+        //{ str: "Solve for x:", prob: "15x - 144 = 3x - 12", ptype: 1 },
+        //{ str: "Solve for y:", prob: "3y - 3 (3y + 1) = 27", ptype: 1 },
+        //{ str: "Solve for z:", prob: "6z - 1 (z + 1) = 35 - z", ptype: 1 },
         /*{ str: "Simplify:", prob: "4y + 5 (3 + y) - 2", ptype: 0 },
         { str: "Simplify:", prob: "12 (10x + 2) + 3x", ptype: 0 },
         { str: "Simplify:", prob: "5z (2 + 3 (-2z)) - 2z", ptype: 0 },
-        { str: "Solve for x:", prob: "15x - 144 = 3x - 12", ptype: 1 },
-        { str: "Solve for y:", prob: "3y - 3 (3y + 1) = 27", ptype: 1 },
-        { str: "Solve for z:", prob: "6z - 1 (z + 1) = 35 - z", ptype: 1 },*/
+        */
       ],
-      rowIndex: 0,
       inputsList: [],
       tabElementList: [],
       limitLength: 0,
@@ -47,7 +47,6 @@ class MathUI extends Component {
     child.push(
       <InputRow
         rowCreation={this.rowCreation}
-        rowIndex={this.state.rowIndex}
         limitLength={this.state.limitLength}
         tabElementList={this.state.tabElementList}
         probType={this.state.problemList[this.state.index].ptype}
@@ -133,7 +132,6 @@ class MathUI extends Component {
             >
               <InputRow
                 rowCreation={this.rowCreation}
-                rowIndex={this.state.rowIndex}
                 limitLength={this.state.limitLength}
                 tabElementList={this.state.tabElementList}
                 problem={this.state.problemList[this.state.index].prob}
