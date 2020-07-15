@@ -22,13 +22,14 @@ class InputRow extends Component {
 
   /* generates line if specific input is placed */
   lineCreator() {
-    console.log(this.state.inputVal);
-    console.log(this.state.inputVal.length);
-    const input = this.state.inputVal.replace(/[\t\n\r]/gm, " ").trim();
-    console.log(input.length);
+    const input = this.state.inputVal.replace(/[\t\n\r\s]/gm, ""); // removes all whitespace
     console.log(input);
-    const booly = input.match(/^(?:[+\d].*\d|\d)$/gm);
-    this.setState({ lineBool: true });
+    const regex = RegExp(/^[=\d](?:.*\d)(?:.*\d).?$/gm); // replace this
+    const regexBool = regex.test(input);
+    console.log(regexBool);
+    if (regexBool === false) {
+      this.setState({ lineBool: true });
+    }
   }
 
   /* input is added to state var whenever input is changed */
