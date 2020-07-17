@@ -23,9 +23,9 @@ class InputRow extends Component {
   lineCreator() {
     const input = this.state.inputVal.replace(/[\t\n\r\s]/gm, ""); // removes all whitespace
     const regex = RegExp(/^(.*)\1$/gm);
-    const showLine = regex.test(input);
-    console.log(showLine);
-    if (showLine === true) {
+    const showLineBool = regex.test(input);
+    console.log(showLineBool);
+    if (showLineBool === true) {
       this.setState({ lineBool: true });
     }
   }
@@ -47,7 +47,7 @@ class InputRow extends Component {
   /* when hint btn is clicked */
   /* being used for debugging right now */
   handleHint() {
-    console.log(this.props.tabElementList + ":::" + this.props.limitLength);
+    console.log(this.props.tabElementList + " ::: " + this.props.limitLength);
   }
 
   /* when specific keys are pushed in the input */
@@ -241,7 +241,7 @@ class InputRow extends Component {
         <hr
           className="in-hr"
           style={{
-            display: this.props.probType && this.state.lineBool ? "" : "none",
+            display: this.state.lineBool ? "" : "none",
           }}
         />
       </div>

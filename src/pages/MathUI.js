@@ -27,13 +27,6 @@ class MathUI extends Component {
     this.setState({ problem: e.target.value });
   }
 
-  /* for the sake of variety and checking different types of problems 
-  randomIndex() {
-    let min = 0;
-    let max = Math.floor(this.state.problemList.length);
-    return Math.floor(Math.random() * (max - min)) + min;
-  }*/
-
   /* creates new input row component */
   rowCreation() {
     let child = [];
@@ -43,7 +36,6 @@ class MathUI extends Component {
         rowCreation={this.rowCreation}
         limitLength={this.state.limitLength}
         tabElementList={this.state.tabElementList}
-        probType={1}
         problem={this.state.problem}
       />
     );
@@ -54,8 +46,8 @@ class MathUI extends Component {
   }
 
   async handleSubmit() {
-    const result = await this.tabElementListCreator();
-    console.log(result);
+    await this.tabElementListCreator();
+    //console.log(result);
     // wait for all data before row creation
     this.rowCreation();
   }
@@ -140,6 +132,28 @@ class MathUI extends Component {
                 />
               </div>
             </div>
+            <div
+              className="row"
+              style={{ display: this.state.initBool ? "none" : "" }}
+            >
+              <div className="mx-auto">
+                <button
+                  className="btn btn-primary init-btn"
+                  onClick={() => {
+                    if (
+                      problem !== "" &&
+                      problem.replace(/\s/g, "").length &&
+                      this.state.initBool === false
+                    ) {
+                      this.setState({ initBool: true });
+                      this.handleSubmit();
+                    }
+                  }}
+                >
+                  submit
+                </button>
+              </div>
+            </div>
 
             <form
               onSubmit={(e) => {
@@ -150,17 +164,6 @@ class MathUI extends Component {
                 <div key={i}>{obj}</div>
               ))}
             </form>
-          </div>
-        </div>
-        <div className="row">
-          <div className="mx-auto">
-            <button
-              className="btn btn-primary next-btn"
-              style={{ visibility: "hidden" }}
-              onClick={() => console.log(this.state.limitLength)}
-            >
-              next
-            </button>
           </div>
         </div>
       </div>

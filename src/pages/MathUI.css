@@ -6,6 +6,11 @@
   margin: 50px !important;
 }
 
+.init-btn {
+  border-radius: 32px !important;
+  margin-bottom: 10px;
+}
+
 .simp-row {
   margin-bottom: 12px;
   margin-left: -40px !important;
