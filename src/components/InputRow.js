@@ -47,7 +47,7 @@ class InputRow extends Component {
   /* when hint btn is clicked */
   /* being used for debugging right now */
   handleHint() {
-    console.log(this.props.probType + " " + this.props.problem);
+    console.log(this.props.tabElementList + ":::" + this.props.limitLength);
   }
 
   /* when specific keys are pushed in the input */

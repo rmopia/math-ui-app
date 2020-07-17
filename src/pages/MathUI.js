@@ -8,35 +8,31 @@ import "./MathUI.css";
 class MathUI extends Component {
   constructor(props) {
     super(props);
+    this.handleInitInputChange = this.handleInitInputChange.bind(this);
     this.rowCreation = this.rowCreation.bind(this);
     this.tabElementListCreator = this.tabElementListCreator.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       error: null,
       isLoaded: false,
       rowList: [],
-      index: 0,
-      problemList: [
-        //{ str: "Simplify:", prob: "3x - 9 (x + 1) - (-5)", ptype: 0 },
-        { str: "Solve for x:", prob: "12x + 4 = 40", ptype: 1 },
-        //{ str: "Solve for x:", prob: "15x - 144 = 3x - 12", ptype: 1 },
-        //{ str: "Solve for y:", prob: "3y - 3 (3y + 1) = 27", ptype: 1 },
-        //{ str: "Solve for z:", prob: "6z - 1 (z + 1) = 35 - z", ptype: 1 },
-        /*{ str: "Simplify:", prob: "4y + 5 (3 + y) - 2", ptype: 0 },
-        { str: "Simplify:", prob: "12 (10x + 2) + 3x", ptype: 0 },
-        { str: "Simplify:", prob: "5z (2 + 3 (-2z)) - 2z", ptype: 0 },
-        */
-      ],
+      problem: "",
+      initBool: false,
       tabElementList: [],
       limitLength: 0,
     };
   }
 
-  /* for the sake of variety and checking different types of problems */
+  handleInitInputChange(e) {
+    this.setState({ problem: e.target.value });
+  }
+
+  /* for the sake of variety and checking different types of problems 
   randomIndex() {
     let min = 0;
     let max = Math.floor(this.state.problemList.length);
     return Math.floor(Math.random() * (max - min)) + min;
-  }
+  }*/
 
   /* creates new input row component */
   rowCreation() {
@@ -47,14 +43,40 @@ class MathUI extends Component {
         rowCreation={this.rowCreation}
         limitLength={this.state.limitLength}
         tabElementList={this.state.tabElementList}
-        probType={this.state.problemList[this.state.index].ptype}
-        problem={this.state.problemList[this.state.index].prob}
+        probType={1}
+        problem={this.state.problem}
       />
     );
 
     this.setState({
       rowList: [...this.state.rowList, child],
     });
+  }
+
+  async handleSubmit() {
+    const result = await this.tabElementListCreator();
+    console.log(result);
+    // wait for all data before row creation
+    this.rowCreation();
+  }
+
+  /* Element indices to find deltas between element & cursor */
+  tabElementListCreator() {
+    const prob = this.state.problem.trim();
+    let limitLen = 0;
+    let arr = [];
+    for (let i = 0; i < prob.length; i++) {
+      if (prob[i] === " ") {
+        arr.push(i + 1);
+        limitLen = i;
+      }
+    }
+    limitLen += 1;
+    this.setState({
+      tabElementList: [...this.state.tabElementList, ...arr],
+      limitLength: limitLen,
+    });
+    return true;
   }
 
   /* not required at this time */
@@ -83,31 +105,8 @@ class MathUI extends Component {
       );
   }*/
 
-  componentDidMount() {
-    this.setState({ index: this.randomIndex() });
-    this.tabElementListCreator();
-  }
-
-  /* Element indices to find deltas between element & cursor */
-  tabElementListCreator() {
-    const str = this.state.problemList[this.state.index].prob;
-    let limitLen = 0;
-    let arr = [];
-    for (let i = 0; i < str.length; i++) {
-      if (str[i] === " ") {
-        arr.push(i + 1);
-        limitLen = i;
-      }
-    }
-    limitLen += 1;
-    this.setState({
-      tabElementList: [...this.state.tabElementList, ...arr],
-      limitLength: limitLen,
-    });
-  }
-
   render() {
-    const { problemList, index } = this.state;
+    const { problem, initBool } = this.state;
     return (
       <div className="v3div">
         <div className="first-spacer" />
@@ -115,10 +114,30 @@ class MathUI extends Component {
           <div className="mx-auto">
             <div className="row simp-row">
               <div className="col simp-col-l">
-                <h5 className="simp-text">{problemList[index].str}</h5>
+                <h5 className="simp-text">
+                  {initBool ? "Solve/Simplify:" : "Enter Problem:"}
+                </h5>
               </div>
               <div className="col simp-col-r">
-                <h5 className="simp-text">{problemList[index].prob}</h5>
+                <input
+                  className="form-control initial-input"
+                  type="text"
+                  autoFocus={true}
+                  required
+                  autoComplete="off"
+                  onChange={this.handleInitInputChange}
+                  onKeyPress={(event) => {
+                    if (
+                      event.key === "Enter" &&
+                      problem !== "" &&
+                      problem.replace(/\s/g, "").length &&
+                      this.state.initBool === false
+                    ) {
+                      this.setState({ initBool: true });
+                      this.handleSubmit();
+                    }
+                  }}
+                />
               </div>
             </div>
 
@@ -127,14 +146,6 @@ class MathUI extends Component {
                 e.preventDefault();
               }}
             >
-              <InputRow
-                rowCreation={this.rowCreation}
-                limitLength={this.state.limitLength}
-                tabElementList={this.state.tabElementList}
-                problem={this.state.problemList[this.state.index].prob}
-                probType={this.state.problemList[this.state.index].ptype}
-              />
-
               {this.state.rowList.map((obj, i) => (
                 <div key={i}>{obj}</div>
               ))}

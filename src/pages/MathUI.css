@@ -8,6 +8,7 @@
 
 .simp-row {
   margin-bottom: 12px;
+  margin-left: -40px !important;
 }
 
 .simp-col-l {
@@ -20,8 +21,20 @@
   margin-left: -25px;
 }
 
+.initial-input {
+  font-family: "Overpass Mono";
+  font-weight: 700 !important;
+  color: black !important;
+  font-size: 1.25em !important;
+  box-shadow: none !important;
+  border: none !important;
+  width: 40vh !important;
+  caret-color: darkcyan;
+}
+
 .simp-text {
   font-family: "Overpass Mono";
   font-weight: 700 !important;
   font-size: 1.25em !important;
+  margin-top: 10px;
 }
