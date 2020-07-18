@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import hint from "../images/Hint.png";
 import "./InputRow.css";
 
 class InputRow extends Component {
@@ -163,17 +164,19 @@ class InputRow extends Component {
     return (
       <div>
         <div className="row row-init">
-          <button
-            className="btn btn-info hint-b"
-            onMouseUp={this.handleHint}
-            formNoValidate
+          <div
+            className="hint-col"
             style={{ visibility: nextRowBool ? "visible" : "hidden" }}
           >
-            <span role="img" aria-label="thinking">
-              &#129300;
-            </span>
-            hint
-          </button>
+            <button
+              className="btn btn-info hint-b"
+              onMouseUp={this.handleHint}
+              formNoValidate
+            >
+              <img src={hint} className="hint-pic" />
+            </button>
+            <span className="caption">Hint</span>
+          </div>
           <div
             className="input-span"
             style={{

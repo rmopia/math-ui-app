@@ -1,5 +1,5 @@
 .row-init {
-  margin-bottom: 10px;
+  margin-bottom: -4px;
 }
 
 .input-span {
@@ -7,6 +7,7 @@
   padding-bottom: 3px;
   border-radius: 32px;
   width: 100vh;
+  margin-bottom: 30px;
 }
 
 .leftside {
@@ -18,7 +19,7 @@
 
 .in-hr {
   border: 2px solid black;
-  margin-top: -8px;
+  margin-top: -28px;
   width: 24vw;
 }
 
@@ -30,24 +31,44 @@
   box-shadow: none !important;
   border: none !important;
   width: 40vh !important;
-  margin-left: 91px;
+  margin-left: 90px;
   caret-color: darkcyan;
+}
+
+.hint-col {
+  vertical-align: top !important;
+  display: inline-block !important;
 }
 
 .hint-b {
   position: relative;
   border-radius: 50% !important;
-  width: 7vh !important;
-  left: -10px !important;
+  width: 6vh !important;
+  height: 6vh;
+  left: -8px !important;
   font-size: small !important;
+  background-color: #ffc400 !important;
+  border: #ffc400 !important;
 }
 
 .hint-b:hover,
 .hint-b:active,
 .hint-b:visited,
 .hint-b:focus {
-  background-color: darkcyan !important;
-  border-color: darkcyan !important;
+  background-color: gold !important;
+  border-color: gold !important;
+}
+
+.hint-pic {
+  max-width: 160%;
+  max-height: 160%;
+  margin-left: -5px !important;
+}
+
+.caption {
+  display: block !important;
+  color: #ffc400;
+  font-weight: 500;
 }
 
 .check-btn {

@@ -35,6 +35,7 @@
   border: none !important;
   width: 40vh !important;
   caret-color: darkcyan;
+  margin-left: -5px;
 }
 
 .simp-text {
