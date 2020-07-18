@@ -19,12 +19,12 @@ class InputRow extends Component {
     };
   }
 
-  /* generates line if specific input is placed */
+  /* generates line when specific input is inputted */
   lineCreator() {
     const input = this.state.inputVal.replace(/[\t\n\r\s]/gm, ""); // removes all whitespace
     const regex = RegExp(/^(.*)\1$/gm);
     const showLineBool = regex.test(input);
-    console.log(showLineBool);
+    //console.log(showLineBool);
     if (showLineBool === true) {
       this.setState({ lineBool: true });
     }
@@ -144,7 +144,6 @@ class InputRow extends Component {
   }
 
   /* Find difference for shift + tab cases */
-
   findDeltaReverse(e) {
     let tList = this.props.tabElementList;
     let revList = [].concat(tList).reverse();

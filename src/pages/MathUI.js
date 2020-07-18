@@ -23,6 +23,7 @@ class MathUI extends Component {
     };
   }
 
+  /* handle initial equation input */
   handleInitInputChange(e) {
     this.setState({ problem: e.target.value });
   }
@@ -45,10 +46,9 @@ class MathUI extends Component {
     });
   }
 
+  /* handle what happens when input equation is submitted */
   async handleSubmit() {
-    await this.tabElementListCreator();
-    //console.log(result);
-    // wait for all data before row creation
+    await this.tabElementListCreator(); // waits for all data before row creation
     this.rowCreation();
   }
 
