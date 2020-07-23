@@ -21,6 +21,7 @@ class MathUI extends Component {
       initBool: false,
       tabElementList: [],
       limitLength: 0,
+      rowIndex: 0,
     };
   }
 
@@ -39,10 +40,11 @@ class MathUI extends Component {
         limitLength={this.state.limitLength}
         tabElementList={this.state.tabElementList}
         problem={this.state.problem}
+        rowIndex={this.state.rowIndex}
       />
     );
-
     this.setState({
+      rowIndex: this.state.rowIndex + 1,
       rowList: [...this.state.rowList, child],
     });
   }
@@ -55,8 +57,6 @@ class MathUI extends Component {
     for (let i = 0; i < og_prob.length; i++) {
       if (rgx.test(og_prob.charAt(i))) {
         if (og_prob.charAt(i - 1) !== " " && og_prob.charAt(i + 1) !== " ") {
-          console.log(og_prob.charAt(i - 1));
-          console.log(og_prob.charAt(i + 1));
           newString += " " + og_prob.charAt(i) + " ";
         } else if (
           og_prob.charAt(i - 1) !== " " &&

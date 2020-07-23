@@ -10,6 +10,7 @@ class InputRow extends Component {
     this.handleInput = this.handleInput.bind(this);
     this.handleHint = this.handleHint.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
     this.findDelta = this.findDelta.bind(this);
     this.findDeltaReverse = this.findDeltaReverse.bind(this);
     this.spaceOutInputVal = this.spaceOutInputVal.bind(this);
@@ -41,6 +42,7 @@ class InputRow extends Component {
 
   /* reset tabbing boolean if input is cleared/empty */
   handleInput(e) {
+    //console.log(e.target.tabIndex);
     if (e.target.value === "") {
       this.setState({ tabbedOut: false });
     }
@@ -48,8 +50,20 @@ class InputRow extends Component {
 
   /* when hint btn is clicked */
   /* being used for debugging right now */
-  handleHint() {
-    console.log(this.props.tabElementList + " ::: " + this.props.limitLength);
+  handleHint(e) {
+    //console.log(this.props.rowIndex);
+  }
+
+  handleKeyUp(event) {
+    const { selectionStart } = event.target;
+    // Backspace is pressed -> leads to previous input row
+    if (
+      event.key === "Backspace" &&
+      selectionStart === 0 &&
+      this.props.rowIndex !== 0
+    ) {
+      document.getElementById(event.target.id - 1).focus();
+    }
   }
 
   /* when specific keys are pushed in the input */
@@ -164,56 +178,53 @@ class InputRow extends Component {
   spaceOutInputVal() {
     const og_prob = this.state.inputVal;
     let newString = "";
+    const input = og_prob.replace(/[\t\n\r\s]/gm, "");
+    const pregex = RegExp(/^(.*)\1$/gm);
     const rgx = RegExp(/\+|-|=|\//gm);
-    for (let i = 0; i < og_prob.length; i++) {
-      if (rgx.test(og_prob.charAt(i))) {
-        let lhs = og_prob.charAt(i - 1);
-        let rhs = og_prob.charAt(i + 1);
-        // 0th index cases
-        if (i === 0 && (rhs === " " || rhs === "\t")) {
-          console.log(333);
-          newString += og_prob.charAt(i);
-          // 0th index 2nd case; add a space
-        } else if (i === 0 && (rhs !== " " || rhs !== "\t")) {
-          console.log(444);
-          newString += og_prob.charAt(i) + " ";
-          // spaces on both sides; do nothing i.e. x = 4
-        } else if (
-          (lhs === " " || lhs === "\t") &&
-          (rhs === " " || rhs === "\t")
-        ) {
-          console.log(11);
-          newString += og_prob.charAt(i);
-          // i.e. x= 4
-        } else if (
-          (lhs !== " " || lhs !== "\t") &&
-          (rhs === " " || rhs === "\t")
-        ) {
-          console.log(2);
-          newString += " " + og_prob.charAt(i);
-          // i.e. x =4
-        } else if (
-          (lhs === " " || lhs === "\t") &&
-          (rhs !== " " || rhs !== "\t")
-        ) {
-          console.log(3);
-          newString += og_prob.charAt(i) + " ";
-          // i.e. x=4
-        } else if (
-          (lhs !== " " || lhs !== "\t") &&
-          (rhs !== " " || rhs !== "\t")
-        ) {
-          console.log(1);
-          newString += " " + og_prob.charAt(i) + " ";
+    if (pregex.test(input) !== true) {
+      for (let i = 0; i < og_prob.length; i++) {
+        if (rgx.test(og_prob.charAt(i))) {
+          let lhs = og_prob.charAt(i - 1);
+          let rhs = og_prob.charAt(i + 1);
+          // 0th index cases
+          if (i === 0 && (rhs === " " || rhs === "\t")) {
+            newString += og_prob.charAt(i);
+            // 0th index 2nd case; add a space
+          } else if (i === 0 && (rhs !== " " || rhs !== "\t")) {
+            newString += og_prob.charAt(i) + " ";
+            // spaces on both sides; do nothing i.e. x = 4
+          } else if (
+            (lhs === " " || lhs === "\t") &&
+            (rhs === " " || rhs === "\t")
+          ) {
+            newString += og_prob.charAt(i);
+            // i.e. x= 4
+          } else if (
+            (lhs !== " " || lhs !== "\t") &&
+            (rhs === " " || rhs === "\t")
+          ) {
+            newString += " " + og_prob.charAt(i);
+            // i.e. x =4
+          } else if (
+            (lhs === " " || lhs === "\t") &&
+            (rhs !== " " || rhs !== "\t")
+          ) {
+            newString += og_prob.charAt(i) + " ";
+            // i.e. x=4
+          } else if (
+            (lhs !== " " || lhs !== "\t") &&
+            (rhs !== " " || rhs !== "\t")
+          ) {
+            newString += " " + og_prob.charAt(i) + " ";
+          } else {
+            newString += og_prob.charAt(i);
+          }
         } else {
           newString += og_prob.charAt(i);
         }
-      } else {
-        console.log(5);
-        newString += og_prob.charAt(i);
       }
+      this.setState({ inputVal: newString });
     }
-    this.setState({ inputVal: newString });
   }
 
   render() {
@@ -250,6 +261,7 @@ class InputRow extends Component {
               <div className="col col-md-9">
                 <input
                   type="text"
+                  id={this.props.rowIndex}
                   required
                   autoComplete="off"
                   className="form-control input-init"
@@ -270,6 +282,7 @@ class InputRow extends Component {
                     }
                   }}
                   onKeyDown={this.handleKeyDown}
+                  onKeyUp={this.handleKeyUp}
                   value={inputVal}
                   style={{
                     backgroundColor: nextRowBool ? "ghostwhite" : "white",
