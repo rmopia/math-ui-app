@@ -27,7 +27,6 @@ class InputRow extends Component {
     const input = this.state.inputVal.replace(/[\t\n\r\s]/gm, ""); // removes all whitespace
     const regex = RegExp(/^(.*)\1$/gm);
     const showLineBool = regex.test(input);
-    //console.log(showLineBool);
     if (showLineBool === true) {
       this.setState({ lineBool: true });
     }
@@ -42,7 +41,6 @@ class InputRow extends Component {
 
   /* reset tabbing boolean if input is cleared/empty */
   handleInput(e) {
-    //console.log(e.target.tabIndex);
     if (e.target.value === "") {
       this.setState({ tabbedOut: false });
     }
@@ -60,6 +58,7 @@ class InputRow extends Component {
     if (
       event.key === "Backspace" &&
       selectionStart === 0 &&
+      selectionStart !== 1 &&
       this.props.rowIndex !== 0
     ) {
       document.getElementById(event.target.id - 1).focus();
@@ -116,13 +115,13 @@ class InputRow extends Component {
       selectionStart > 0
     ) {
       event.preventDefault();
-      let diff = this.findDeltaReverse(event);
+      /*let diff = this.findDeltaReverse(event);
       if (diff === 0) {
         event.target.selectionStart = event.target.selectionEnd = 0;
       } else {
         event.target.selectionStart = event.target.selectionEnd =
           selectionStart - diff;
-      }
+      }*/
     }
     // Shift + Tab at 0 and with no content
     else if (

@@ -1,5 +1,6 @@
 .v3div {
   overflow-x: hidden;
+  overflow: hidden;
 }
 
 .first-spacer {
