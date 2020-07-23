@@ -9,6 +9,7 @@ class MathUI extends Component {
   constructor(props) {
     super(props);
     this.handleInitInputChange = this.handleInitInputChange.bind(this);
+    this.spaceOutInput = this.spaceOutInput.bind(this);
     this.rowCreation = this.rowCreation.bind(this);
     this.tabElementListCreator = this.tabElementListCreator.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -46,8 +47,40 @@ class MathUI extends Component {
     });
   }
 
+  /* auto spacing input function */
+  spaceOutInput() {
+    const og_prob = this.state.problem;
+    let newString = "";
+    const rgx = RegExp(/\+|-|=|\//gm);
+    for (let i = 0; i < og_prob.length; i++) {
+      if (rgx.test(og_prob.charAt(i))) {
+        if (og_prob.charAt(i - 1) !== " " && og_prob.charAt(i + 1) !== " ") {
+          console.log(og_prob.charAt(i - 1));
+          console.log(og_prob.charAt(i + 1));
+          newString += " " + og_prob.charAt(i) + " ";
+        } else if (
+          og_prob.charAt(i - 1) !== " " &&
+          og_prob.charAt(i + 1) === " "
+        ) {
+          newString += " " + og_prob.charAt(i);
+        } else if (
+          og_prob.charAt(i - 1) === " " &&
+          og_prob.charAt(i + 1) !== " "
+        ) {
+          newString += og_prob.charAt(i) + " ";
+        } else {
+          newString += og_prob.charAt(i);
+        }
+      } else {
+        newString += og_prob.charAt(i);
+      }
+    }
+    this.setState({ problem: newString });
+  }
+
   /* handle what happens when input equation is submitted */
   async handleSubmit() {
+    await this.spaceOutInput();
     await this.tabElementListCreator(); // waits for all data before row creation
     this.rowCreation();
   }
@@ -118,6 +151,7 @@ class MathUI extends Component {
                   required
                   autoComplete="off"
                   onChange={this.handleInitInputChange}
+                  value={problem}
                   onKeyPress={(event) => {
                     if (
                       event.key === "Enter" &&

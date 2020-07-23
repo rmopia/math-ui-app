@@ -12,6 +12,7 @@ class InputRow extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.findDelta = this.findDelta.bind(this);
     this.findDeltaReverse = this.findDeltaReverse.bind(this);
+    this.spaceOutInputVal = this.spaceOutInputVal.bind(this);
     this.state = {
       nextRowBool: true,
       lineBool: false,
@@ -159,6 +160,62 @@ class InputRow extends Component {
     return diff;
   }
 
+  /* auto spacing input value function */
+  spaceOutInputVal() {
+    const og_prob = this.state.inputVal;
+    let newString = "";
+    const rgx = RegExp(/\+|-|=|\//gm);
+    for (let i = 0; i < og_prob.length; i++) {
+      if (rgx.test(og_prob.charAt(i))) {
+        let lhs = og_prob.charAt(i - 1);
+        let rhs = og_prob.charAt(i + 1);
+        // 0th index cases
+        if (i === 0 && (rhs === " " || rhs === "\t")) {
+          console.log(333);
+          newString += og_prob.charAt(i);
+          // 0th index 2nd case; add a space
+        } else if (i === 0 && (rhs !== " " || rhs !== "\t")) {
+          console.log(444);
+          newString += og_prob.charAt(i) + " ";
+          // spaces on both sides; do nothing i.e. x = 4
+        } else if (
+          (lhs === " " || lhs === "\t") &&
+          (rhs === " " || rhs === "\t")
+        ) {
+          console.log(11);
+          newString += og_prob.charAt(i);
+          // i.e. x= 4
+        } else if (
+          (lhs !== " " || lhs !== "\t") &&
+          (rhs === " " || rhs === "\t")
+        ) {
+          console.log(2);
+          newString += " " + og_prob.charAt(i);
+          // i.e. x =4
+        } else if (
+          (lhs === " " || lhs === "\t") &&
+          (rhs !== " " || rhs !== "\t")
+        ) {
+          console.log(3);
+          newString += og_prob.charAt(i) + " ";
+          // i.e. x=4
+        } else if (
+          (lhs !== " " || lhs !== "\t") &&
+          (rhs !== " " || rhs !== "\t")
+        ) {
+          console.log(1);
+          newString += " " + og_prob.charAt(i) + " ";
+        } else {
+          newString += og_prob.charAt(i);
+        }
+      } else {
+        console.log(5);
+        newString += og_prob.charAt(i);
+      }
+    }
+    this.setState({ inputVal: newString });
+  }
+
   render() {
     const { nextRowBool, inputVal } = this.state;
     return (
@@ -206,6 +263,7 @@ class InputRow extends Component {
                       inputVal !== "" &&
                       inputVal.replace(/\s/g, "").length
                     ) {
+                      this.spaceOutInputVal();
                       this.lineCreator();
                       this.props.rowCreation();
                       this.setState({ nextRowBool: false });
@@ -231,6 +289,7 @@ class InputRow extends Component {
                 inputVal !== "" &&
                 inputVal.replace(/\s/g, "").length
               ) {
+                this.spaceOutInputVal();
                 this.lineCreator();
                 this.props.rowCreation();
                 this.setState({ nextRowBool: false });
